@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import BASE_URL from "../config";
 
 export default function UploadPage() {
   const [file, setFile] = useState(null);
@@ -18,18 +19,20 @@ export default function UploadPage() {
     formData.append("user_id", userId);
 
     try {
-      const res = await fetch("http://127.0.0.1:5000/process-pdf", {
+      const res = await fetch(`${BASE_URL}/process-pdf`, {
         method: "POST",
         body: formData,
       });
+
       const data = await res.json();
+
       if (data.status === "success") {
         setStatus("✅ PDF processed successfully!");
       } else {
         setStatus("❌ Failed: " + (data.error || "Unknown error"));
       }
     } catch (err) {
-      console.error(err);
+      console.error("❌ Upload error:", err);
       setStatus("❌ Error uploading PDF");
     }
 
@@ -54,7 +57,7 @@ export default function UploadPage() {
       >
         {loading ? (
           <div className="flex items-center justify-center gap-2">
-            <span className="loader border-white h-5 w-5 animate-spin rounded-full border-2 border-t-2" />
+            <span className="loader h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
             Uploading...
           </div>
         ) : (
@@ -62,7 +65,9 @@ export default function UploadPage() {
         )}
       </button>
 
-      {status && <p className="mt-4 font-medium text-sm md:text-base">{status}</p>}
+      {status && (
+        <p className="mt-4 font-medium text-sm md:text-base text-gray-800">{status}</p>
+      )}
     </div>
   );
 }
