@@ -4,11 +4,12 @@ import LoginButton from "../components/LoginButton";
 
 export default function LoginPage() {
   useEffect(() => {
-    const uid = localStorage.getItem("user_id");
-    if (uid) {
-      window.location.href = "/";
-    }
-  }, []);
+  const uid = localStorage.getItem("user_id");
+  if (uid) {
+    window.location.href = "/";
+  }
+}, []);
+
 
   return (
     <div className="h-screen flex flex-col items-center justify-center text-center">
